@@ -98,14 +98,62 @@ public class AccountsControllerTest {
 
         account.setFirstName(null);
 
-        String json = gson.toJson(MockData.getMockAccountRequest());
+        String json = gson.toJson(account);
 
         mockMvc.perform(post("/accounts/json")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("account has been successfully added")));
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
 
     }
 
+    @Test
+    public void addAccountLastNameNullTest() throws Exception {
+
+        Account account = MockData.getMockAccountRequest();
+
+        account.setLastName(null);
+
+        String json = gson.toJson(account);
+
+        mockMvc.perform(post("/accounts/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+
+    }
+
+    @Test
+    public void addAccountAccountNumberNullTest() throws Exception {
+
+        Account account = MockData.getMockAccountRequest();
+
+        account.setAccountNumber(null);
+
+        String json = gson.toJson(account);
+
+        mockMvc.perform(post("/accounts/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+
+    }
+
+    @Test
+    public void addAccountDuplicateAccountTest() throws Exception {
+
+        Account account = MockData.getMockAccounts().get(0);
+
+        String json = gson.toJson(account);
+
+        mockMvc.perform(post("/accounts/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+
+    }
 }

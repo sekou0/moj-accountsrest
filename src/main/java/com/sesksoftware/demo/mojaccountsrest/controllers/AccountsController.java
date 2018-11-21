@@ -5,6 +5,7 @@ import com.sesksoftware.demo.mojaccountsrest.domain.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -46,6 +47,12 @@ public class AccountsController {
 
         if(account == null) {
             throw new IllegalArgumentException("Account cannot be null");
+        }
+
+        if(StringUtils.isEmpty(account.getFirstName()) ||
+            StringUtils.isEmpty(account.getLastName()) ||
+            StringUtils.isEmpty(account.getAccountNumber())) {
+            throw new IllegalArgumentException("First Name, Last Name and Account NUmber must be completed");
         }
 
         accountMap.put(account.getAccountId(), account);
