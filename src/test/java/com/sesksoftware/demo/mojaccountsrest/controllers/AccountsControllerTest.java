@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -121,7 +122,7 @@ public class AccountsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account Number must be completed")));
 
     }
 
@@ -138,7 +139,7 @@ public class AccountsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account Number must be completed")));
 
     }
 
@@ -155,5 +156,14 @@ public class AccountsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("Account id already exists")));
 
+    }
+
+    @Test
+    public void deleteAccountTest() throws Exception {
+
+        mockMvc.perform(delete("/accounts/json/1"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", is("account successfully deleted")))
+                .andExpect(status().isMovedPermanently());
     }
 }

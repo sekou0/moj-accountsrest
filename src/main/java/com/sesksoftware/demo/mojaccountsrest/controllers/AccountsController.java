@@ -58,7 +58,7 @@ public class AccountsController {
         if(StringUtils.isEmpty(account.getFirstName()) ||
             StringUtils.isEmpty(account.getLastName()) ||
             StringUtils.isEmpty(account.getAccountNumber())) {
-            throw new IllegalArgumentException("First Name, Last Name and Account NUmber must be completed");
+            throw new IllegalArgumentException("First Name, Last Name and Account Number must be completed");
         }
 
         Long nextAccountId = 1L;
