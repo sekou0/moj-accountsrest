@@ -146,6 +146,10 @@ public class AccountsControllerTest {
     @Test
     public void addAccountDuplicateAccountTest() throws Exception {
 
+        List<Account> accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
         Account account = MockData.getMockAccounts().get(0);
 
         String json = gson.toJson(account);
@@ -156,6 +160,10 @@ public class AccountsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("Account id already exists")));
 
+        accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
     }
 
     @Test
@@ -176,6 +184,45 @@ public class AccountsControllerTest {
         assertNotNull(accountList);
         assertEquals(2, accountList.size());
 
+    }
+
+    @Test
+    public void deleteAccountBadIdTest() throws Exception {
+
+        List<Account> accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+
+
+        mockMvc.perform(delete("/accounts/json/XXX"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Id Must be a valid number")));
+
+        accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+
+    }
+
+    @Test
+    public void deleteAccountNonexistentIdTest() throws Exception {
+
+        List<Account> accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+
+
+        mockMvc.perform(delete("/accounts/json/999"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Account Id: 999 does not exist")));
+
+        accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
 
     }
 }

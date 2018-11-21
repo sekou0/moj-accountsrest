@@ -101,8 +101,14 @@ public class AccountsController {
 
     public Account removeAccount(Long accountId) throws Exception {
 
-        return accountMap.remove(accountId);
+        Account removedAccount =  accountMap.remove(accountId);
 
+        if(removedAccount == null) {
+
+            throw new IllegalArgumentException(String.format("Account Id: %d does not exist", accountId ));
+        }
+
+        return removedAccount;
     }
 
 
