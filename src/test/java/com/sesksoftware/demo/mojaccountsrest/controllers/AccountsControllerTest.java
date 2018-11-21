@@ -1,5 +1,6 @@
 package com.sesksoftware.demo.mojaccountsrest.controllers;
 
+import com.google.gson.Gson;
 import com.sesksoftware.demo.mojaccountsrest.mock.MockData;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +28,8 @@ public class AccountsControllerTest {
 
     @Autowired
     private AccountsController accountsController;
+
+    private Gson gson = new Gson();
 
     @Before
     public void init() {
@@ -47,6 +51,17 @@ public class AccountsControllerTest {
                 .andExpect(jsonPath("$.*", hasSize(3)))
                 .andExpect(jsonPath("$[0].accountId", is(1)));
 
+    }
+
+    @Test
+    public void addAccount() throws Exception {
+
+        String json = gson.toJson(MockData.getMockAccountRequest());
+
+        mockMvc.perform(post("/accounts/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message", is("account has been successfully added")));
     }
 
 
