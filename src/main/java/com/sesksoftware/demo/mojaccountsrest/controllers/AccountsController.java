@@ -49,11 +49,30 @@ public class AccountsController {
             throw new IllegalArgumentException("Account cannot be null");
         }
 
+        Account existingAccount = accountMap.get(account.getAccountId());
+
+        if(existingAccount != null) {
+            throw new IllegalArgumentException("Account id already exists");
+        }
+
         if(StringUtils.isEmpty(account.getFirstName()) ||
             StringUtils.isEmpty(account.getLastName()) ||
             StringUtils.isEmpty(account.getAccountNumber())) {
             throw new IllegalArgumentException("First Name, Last Name and Account NUmber must be completed");
         }
+
+        Long nextAccountId = 1L;
+
+        Comparator<Account> comparator = Comparator.comparingLong(Account::getAccountId);
+
+        Optional<Account> maxIdAccount = accountMap.values().stream().max(comparator);
+
+        if(maxIdAccount.isPresent()) {
+
+            nextAccountId = (maxIdAccount.get().getAccountId().longValue() + 1);
+        }
+
+        account.setAccountId(nextAccountId);
 
         accountMap.put(account.getAccountId(), account);
 

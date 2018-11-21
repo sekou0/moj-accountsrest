@@ -104,7 +104,7 @@ public class AccountsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account Number must be completed")));
 
     }
 
@@ -153,7 +153,7 @@ public class AccountsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("First Name, Last Name and Account NUmber must be completed")));
+                .andExpect(jsonPath("$.message", is("Account id already exists")));
 
     }
 }
