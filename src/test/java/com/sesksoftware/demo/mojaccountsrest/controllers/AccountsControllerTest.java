@@ -161,9 +161,21 @@ public class AccountsControllerTest {
     @Test
     public void deleteAccountTest() throws Exception {
 
+        List<Account> accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+
+
         mockMvc.perform(delete("/accounts/json/1"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", is("account successfully deleted")))
-                .andExpect(status().isMovedPermanently());
+                .andExpect(status().isMovedPermanently())
+                .andExpect(jsonPath("$.message", is("account successfully deleted")));
+
+        accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(2, accountList.size());
+
+
     }
 }

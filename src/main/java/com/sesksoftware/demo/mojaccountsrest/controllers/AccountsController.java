@@ -32,6 +32,25 @@ public class AccountsController {
         return new ResponseEntity<>(new MessageResponse("account has been successfully added"), HttpStatus.CREATED);
     }
 
+    @RequestMapping(path = "/json/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<MessageResponse> deleteAccountRequest(
+            @PathVariable(name = "id") String accountId ) throws Exception {
+
+
+        Long accountIdLong = null;
+
+        try {
+            accountIdLong = Long.parseLong(accountId);
+
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Id Must be a valid number");
+
+        }
+
+        removeAccount(accountIdLong);
+
+        return new ResponseEntity<>(new MessageResponse("account successfully deleted"), HttpStatus.MOVED_PERMANENTLY);
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<MessageResponse> illegalArgumentException(IllegalArgumentException e) {
@@ -77,6 +96,12 @@ public class AccountsController {
         accountMap.put(account.getAccountId(), account);
 
         return account;
+
+    }
+
+    public Account removeAccount(Long accountId) throws Exception {
+
+        return accountMap.remove(accountId);
 
     }
 
