@@ -17,12 +17,22 @@ public class AccountsController {
 
     private Map<Long, Account> accountMap = new HashMap<>();
 
+    /***
+     * Get all the account records
+     * @return a ResponseEntity containing the list of accounts
+     */
     @RequestMapping(path = "/json", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<List<Account>> getAllAcounts() {
+    public ResponseEntity<List<Account>> getAllAccounts() {
 
         return new ResponseEntity<>(this.getAccounts(), HttpStatus.OK);
     }
 
+    /***
+     * Adds an account request to the accounts list
+     * @param account - instance to be added
+     * @return - fullu hydrated account object with new account id
+     * @throws Exception for Bad requests data
+     */
     @RequestMapping(path = "/json", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<MessageResponse> addAccountRequest(
             @RequestBody Account account) throws Exception {
@@ -32,6 +42,12 @@ public class AccountsController {
         return new ResponseEntity<>(new MessageResponse("account has been successfully added"), HttpStatus.CREATED);
     }
 
+    /***
+     * deletes the account from the list
+     * @param accountId id of the account to remove
+     * @return ResponseEntity with message response
+     * @throws Exception
+     */
     @RequestMapping(path = "/json/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<MessageResponse> deleteAccountRequest(
             @PathVariable(name = "id") String accountId ) throws Exception {
@@ -52,16 +68,31 @@ public class AccountsController {
         return new ResponseEntity<>(new MessageResponse("account successfully deleted"), HttpStatus.MOVED_PERMANENTLY);
     }
 
+    /**
+     * Exception handler
+     * @param e Illegal Arguement Exception
+     * @return response entity with the message response
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<MessageResponse> illegalArgumentException(IllegalArgumentException e) {
 
         return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Get unmodifiable list of accounts from the map
+     * @return unmodifiable list
+     */
     public List<Account> getAccounts() {
         return Collections.unmodifiableList(new ArrayList<>(accountMap.values()));
     }
 
+    /**
+     * add the account
+     * @param account account to add to the list
+     * @return the new account
+     * @throws IllegalArgumentException
+     */
     public Account addAccount(Account account) throws IllegalArgumentException {
 
         if(account == null) {
@@ -99,6 +130,12 @@ public class AccountsController {
 
     }
 
+    /**
+     * removes the account from list
+     * @param accountId id to remove
+     * @return the removed account
+     * @throws Exception
+     */
     public Account removeAccount(Long accountId) throws Exception {
 
         Account removedAccount =  accountMap.remove(accountId);

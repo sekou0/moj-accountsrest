@@ -167,6 +167,32 @@ public class AccountsControllerTest {
     }
 
     @Test
+    public void addAccountDuplicateAccountNumberTest() throws Exception {
+
+        List<Account> accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+        Account firstAccount = MockData.getMockAccounts().get(0);
+
+        Account newRequest = MockData.getMockAccountRequest();
+        newRequest.setAccountNumber("IRN-493-2030");
+
+        String json = gson.toJson(newRequest);
+
+        mockMvc.perform(post("/accounts/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Account Number IRN-493-2030 already exists")));
+
+        accountList = accountsController.getAccounts();
+
+        assertNotNull(accountList);
+        assertEquals(3, accountList.size());
+    }
+
+    @Test
     public void deleteAccountTest() throws Exception {
 
         List<Account> accountList = accountsController.getAccounts();
