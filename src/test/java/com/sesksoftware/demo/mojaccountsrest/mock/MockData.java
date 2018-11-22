@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MockData {
 
-    public static final List<Account> getMockAccounts() {
+    public static List<Account> getMockAccounts() {
         List<Account> accountList = new ArrayList<>();
 
         Account account = new Account();
@@ -37,7 +37,7 @@ public class MockData {
         return accountList;
     }
 
-    public static final Account getMockAccountRequest() {
+    public static Account getMockAccountRequest() {
 
         Account account = new Account();
         account.setFirstName("Natasha");

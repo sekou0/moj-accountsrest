@@ -93,7 +93,7 @@ public class AccountsController {
      * @return the new account
      * @throws IllegalArgumentException
      */
-    public Account addAccount(Account account) throws IllegalArgumentException {
+    public synchronized Account addAccount(Account account) throws IllegalArgumentException {
 
         if(account == null) {
             throw new IllegalArgumentException("Account cannot be null");
@@ -145,7 +145,7 @@ public class AccountsController {
      * @return the removed account
      * @throws Exception
      */
-    public Account removeAccount(Long accountId) throws Exception {
+    public synchronized Account removeAccount(Long accountId) throws Exception {
 
         Account removedAccount =  accountMap.remove(accountId);
 
