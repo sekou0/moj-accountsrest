@@ -15,7 +15,7 @@ import java.util.*;
 public class AccountsController {
 
 
-    private Map<Long, Account> accountMap = new HashMap<>();
+    private final Map<Long, Account> accountMap = new HashMap<>();
 
     /***
      * Get all the account records
@@ -30,7 +30,7 @@ public class AccountsController {
     /***
      * Adds an account request to the accounts list
      * @param account - instance to be added
-     * @return - fullu hydrated account object with new account id
+     * @return - fully hydrated account object with new account id
      * @throws Exception for Bad requests data
      */
     @RequestMapping(path = "/json", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -53,7 +53,7 @@ public class AccountsController {
             @PathVariable(name = "id") String accountId ) throws Exception {
 
 
-        Long accountIdLong = null;
+        Long accountIdLong;
 
         try {
             accountIdLong = Long.parseLong(accountId);
@@ -70,7 +70,7 @@ public class AccountsController {
 
     /**
      * Exception handler
-     * @param e Illegal Arguement Exception
+     * @param e Illegal Argument Exception
      * @return response entity with the message response
      */
     @ExceptionHandler(IllegalArgumentException.class)
@@ -128,7 +128,7 @@ public class AccountsController {
 
         if(maxIdAccount.isPresent()) {
 
-            nextAccountId = (maxIdAccount.get().getAccountId().longValue() + 1);
+            nextAccountId = maxIdAccount.get().getAccountId().longValue() + 1;
         }
 
         account.setAccountId(nextAccountId);
