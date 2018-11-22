@@ -111,6 +111,15 @@ public class AccountsController {
             throw new IllegalArgumentException("First Name, Last Name and Account Number must be completed");
         }
 
+        Optional<Account> duplicateAccountNumber = accountMap.values()
+                .stream()
+                .filter(savedAccount -> savedAccount.getAccountNumber().equalsIgnoreCase(account.getAccountNumber()))
+                .findFirst();
+
+        if(duplicateAccountNumber.isPresent()) {
+            throw new IllegalArgumentException(String.format("Account Number %s already exists", account.getAccountNumber()));
+        }
+
         Long nextAccountId = 1L;
 
         Comparator<Account> comparator = Comparator.comparingLong(Account::getAccountId);
